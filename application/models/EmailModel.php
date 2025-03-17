@@ -25,13 +25,22 @@ class EmailModel extends CI_Model {
             return false;
         }
     }
+    public function getPassword($id){
+        $this->db->select('password');
+        $this->db->where('id', $id);
+        $query = $this->db->get('affiliation');
+        if ($query->num_rows() > 0) {
+            return $query->row()->password;
+        } else {
+            return false;
+        }
+
+    }
     public function EmailMessage(){
         
         $ci = &get_instance(); // Get CodeIgniter instance
         $ci->load->helper('url'); // Load URL helper
-        $logo_url = base_url('assets/images/icvt_logo.png'); 
-
-    
+        $logo_url = base_url('assets/images/icvt_logo.png');
         $message = '
         <html>
         <head>
@@ -67,13 +76,13 @@ class EmailModel extends CI_Model {
             return false; // No matching record found
         }
     }
-    public function EmailMessageApprovedStatus(){
+    public function EmailMessageApprovedStatus($user_name,$password){
         
         $ci = &get_instance(); // Get CodeIgniter instance
         $ci->load->helper('url'); // Load URL helper
         $logo_url = base_url('assets/images/icvt_logo.png'); 
-        $user_name='Jeeva';
-        $password='Jeeva@1';
+       //$user_name='Jeeva';
+        //$password='Jeeva@1';
 
     
         $message ="

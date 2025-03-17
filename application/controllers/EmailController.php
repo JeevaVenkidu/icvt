@@ -43,8 +43,6 @@ class EmailController extends CI_Controller {
             return;
         }
         // Set email details
-
-
         $this->email->from('jeeva6316a@gmail.com', 'Jeeva'); // from
         $this->email->to($EmailId);//to
         $this->email->subject('Welcome to ICVTE - Document Verification in Process');
@@ -84,6 +82,7 @@ class EmailController extends CI_Controller {
             return;
         }
         $EmailId=$this->EmailModel->getEmail($id);
+        $password=$this->EmailModel->getPassword($id);
         if(!$EmailId){
             echo json_encode([
                 'status' => 'error',
@@ -94,13 +93,13 @@ class EmailController extends CI_Controller {
         $this->email->from('jeeva6316a@gmail.com', 'Jeeva'); // from
         $this->email->to($EmailId);//to
         $this->email->subject('Welcome to ICVTE - Document Verification in Process');
-        $this->email->message($this->EmailModel->EmailMessageApprovedStatus());
+        $this->email->message($this->EmailModel->EmailMessageApprovedStatus($EmailId,$password));
 
         // Send email and return response
         if ($this->email->send()) {
             echo json_encode(['status' => 'success', 'message' => 'Email sent successfully']);
         } else {
-            echo json_encode(['status' => 'error', 'message' => $this->email->print_debugger()]);
+            echo json_encode(['status' => 'error', 'message' => $this->email->print_debugger($EmailId,$password)]);
         }
 
 
