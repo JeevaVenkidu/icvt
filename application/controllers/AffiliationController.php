@@ -352,7 +352,6 @@ class AffiliationController extends CI_Controller
             echo "User ID is missing!";
             return;
         }
-        
         if($this->AffiliationModel->UploadDeletion($affiliationId)){
             if($this->db->where('id', $affiliationId)->delete('affiliation')){
                 echo json_encode([
