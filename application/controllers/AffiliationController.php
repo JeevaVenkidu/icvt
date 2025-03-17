@@ -191,7 +191,7 @@ class AffiliationController extends CI_Controller
             $OwnerPhotoUploadStatus=$this->AffiliationModel->AddAffiliation($OwnerPhotoUpload ,$affiliation_id);
             if(!$OwnerPhotoUploadStatus)
             {
-                echo json_encode(["error" => "Something went wrong. Lab Photo was not uploaded properly."]);
+                echo json_encode(["error" => "Something went wrong. Owner Photo was not uploaded properly."]);
                
             }else{
                 $count++;
@@ -352,10 +352,9 @@ class AffiliationController extends CI_Controller
             echo "User ID is missing!";
             return;
         }
-        if($this->db->where('affiliation_id', $affiliationId)->delete('uploads')){
-            
-            if ($this->db->where('id', $affiliationId)->delete('affiliation'))
-            {
+        
+        if($this->AffiliationModel->UploadDeletion($affiliationId)){
+            if($this->db->where('id', $affiliationId)->delete('affiliation')){
                 echo json_encode([
                     "status" => true,
                     "message" => "Affiliation and associated uploads deleted successfully."
@@ -373,6 +372,7 @@ class AffiliationController extends CI_Controller
             ]);
 
         }
+    
     }      
     public function EditStatus()
     {

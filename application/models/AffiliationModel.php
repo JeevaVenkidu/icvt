@@ -31,6 +31,7 @@ class AffiliationModel extends CI_Model {
         $query = $this->db->get('affiliation'); 
         return $query->result_array(); 
     }
+
     public function checkAffiliationExists($id)
     {
     $query = $this->db->get_where('affiliation', ['id' => $id]);
@@ -39,7 +40,6 @@ class AffiliationModel extends CI_Model {
     public function updateAffiliation($update_data,$id){
         return $this->db->where('id', $id)->update('affiliation', $update_data) && $this->db->affected_rows() > 0;
     }
-    
     public function getSelectedCoursesIdModel($id) {
         $this->db->select('selected_courses');
         $this->db->from('affiliation');
@@ -52,8 +52,6 @@ class AffiliationModel extends CI_Model {
         }
         return [];
     }
-
-
     public function getSelectedCourses($courseIds)
     {
         if (empty($courseIds)) {
@@ -66,6 +64,34 @@ class AffiliationModel extends CI_Model {
         
         return array_column($query->result_array(), 'course_name'); 
     }
+
+    public function UploadDeletion($affiliationId)
+    {
+        $k = 0;
+        $this->db->select('file_path');
+        $this->db->from('uploads');
+        $this->db->where('affiliation_id', $affiliationId);
+        $query = $this->db->get();
+    
+        if ($query->num_rows() > 0) {
+            foreach ($query->result() as $row) {
+                $file_path = $row->file_path;
+                if (file_exists($file_path)) {
+                    if (unlink($file_path)) {
+                        $k = 1;
+                    }
+                }
+            }
+            $this->db->where('affiliation_id', $affiliationId);
+            $this->db->delete('uploads');
+        }
+    
+        return $k;
+    }
+    
+
+
+    
 
 
 
