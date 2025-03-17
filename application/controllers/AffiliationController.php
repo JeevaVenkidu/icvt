@@ -1,7 +1,8 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class AffiliationController extends CI_Controller {
+class AffiliationController extends CI_Controller
+{
 
     public function __construct()
     {
@@ -388,7 +389,7 @@ class AffiliationController extends CI_Controller {
         $id=$this->input->post('id');
         
         $data=array(
-            'status'=>$status=$this->input->post('status'),
+            'status'=>$this->input->post('status'),
             'updated_at'=> date('Y-m-d H:i:s')
         );
         $this->db->where('id', $id);
@@ -438,8 +439,54 @@ class AffiliationController extends CI_Controller {
 
         }
         echo json_encode($response);
+    }
 
 
+    public function getSelectedCourse()
+    {
+        $this->form_validation->set_rules('InstitutionId','Institution id','required');
+        if($this->form_validation->run() == FALSE)
+        {
+            echo json_encode([
+                'status'=>'Error',
+                'message'=> validation_errors()
+            ]);
+            return;
+        }
+        $InstitutionId=$this->input->post('InstitutionId',true);
+        $checkInstitutionExists=$this->AffiliationModel->checkAffiliationExists($InstitutionId);
+        if(!$checkInstitutionExists)
+        {
+            echo json_encode([
+                'status'=>'Error',
+                'message'=>'Institution Id  not found in database'
+            ]);
+            return;
+        }
+        $coursesId=$this->AffiliationModel->getSelectedCoursesIdModel($InstitutionId);
+        if(empty($coursesId))
+        {
+            echo json_encode([
+                'status'=>'Error',
+                'message'=>'coursesId  not found in database'
+            ]);
+            return ;
+
+        }
+        $courses=$this->AffiliationModel->getSelectedCourses($coursesId);
+        if(empty($courses))
+        {
+            echo json_encode([
+                'status'=>'Error',
+                'message'=>'courses  not found in database or missing'
+            ]);
+            return ;
+
+        }
+
+        echo json_encode($courses);
+
+        
     }
 }
 ?>

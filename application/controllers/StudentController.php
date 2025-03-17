@@ -256,8 +256,5 @@ class StudentController extends CI_Controller
         }
         echo json_encode($response); 
     }
-    
-
-    
 }
 ?>

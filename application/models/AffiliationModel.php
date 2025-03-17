@@ -39,6 +39,34 @@ class AffiliationModel extends CI_Model {
     public function updateAffiliation($update_data,$id){
         return $this->db->where('id', $id)->update('affiliation', $update_data) && $this->db->affected_rows() > 0;
     }
+    
+    public function getSelectedCoursesIdModel($id) {
+        $this->db->select('selected_courses');
+        $this->db->from('affiliation');
+        $this->db->where('id', $id);
+        $query = $this->db->get();
+        
+        if ($query->num_rows() > 0) {
+            $row = $query->row();
+            return explode(',', $row->selected_courses);
+        }
+        return [];
+    }
+
+
+    public function getSelectedCourses($courseIds)
+    {
+        if (empty($courseIds)) {
+            return [];
+        }
+        $this->db->select('*');
+        $this->db->from('courses');
+        $this->db->where_in('id', $courseIds);
+        $query = $this->db->get();
+        
+        return array_column($query->result_array(), 'course_name'); 
+    }
+
 
 
     
