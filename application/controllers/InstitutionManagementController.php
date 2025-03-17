@@ -29,7 +29,7 @@ class InstitutionManagementController extends CI_Controller{
         }
         $data = array(
             'institution_name'   => $this->input->post('InstitutionName'),
-            'status'              => 'approved',
+            'status'              => '',
             'selected_courses'   => $this->input->post('courses'), // Comma-separated course IDs
             'created_at'         => date('Y-m-d H:i:s'),
             'updated_at'         => date('Y-m-d H:i:s')
