@@ -88,6 +88,30 @@ class AffiliationModel extends CI_Model {
     
         return $k;
     }
+    public function checkUserEmailExists($email)
+    {
+        $query=$this->db->get_where('affiliation',['email'=>$email]);
+        return $query->num_rows()>0;
+    }
+
+    public function checkCredentials($email,$password)
+    {
+        $query=$this->db->get_where('affiliation',['email'=>$email]);
+        $query1=$query->row_array();
+        if($query1['password']=='welcome ICVT@123')
+        {
+            return ($query1['password']==$password);
+        }
+        return password_verify($password,$query1['password']);
+
+    }
+    
+    public function ChangePassword($email,$password)
+    {
+        $this->db->where('email',$email);
+        return $this->db->update('affiliation',['password'=>$password]);
+
+    }
     
 
 

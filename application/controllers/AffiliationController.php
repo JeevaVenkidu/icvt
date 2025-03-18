@@ -487,5 +487,59 @@ class AffiliationController extends CI_Controller
 
         
     }
+ 
+    public function InstitutionChangePassword()
+    {
+        $this->form_validation->set_rules('email','E-mail','required');
+        $this->form_validation->set_rules('oldPassword','Old Password','required');
+        $this->form_validation->set_rules('newPassword','New Password','required');
+        $this->form_validation->set_rules('confirmPassword', 'confirm Password', 'required|matches[newPassword]');
+        if ($this->form_validation->run() == FALSE) {
+            echo json_encode([
+                'status' => false,
+                'message' => validation_errors()
+                
+            ]);
+            return;
+        }
+        $email=$this->input->post('email',true);
+        $oldPassword=$this->input->post('oldPassword',true);
+        $Epassword=password_hash(($this->input->post('confirmPassword',true)),PASSWORD_BCRYPT);
+        if(!$this->AffiliationModel->checkUserEmailExists($email))
+        {
+            echo json_encode([
+                'status' => false,
+                'message' =>'Invalid Email'
+                
+            ]);
+            return;
+
+        }
+        if(!$this->AffiliationModel->checkCredentials($email,$oldPassword)){
+            echo json_encode([
+                'status' => false,
+                'message' =>'email or password invalid'
+                
+            ]);
+            return;
+
+
+        }
+        if($this->AffiliationModel->ChangePassword($email,$Epassword))
+        {
+            echo json_encode([
+                'status' => true,
+                'message' =>'password has been changed'
+                
+            ]);
+        }else{
+            echo json_encode([
+                'status' => false,
+                'message' =>'something went wrong please try again later'
+                
+            ]);
+
+        }
+    }
 }
 ?>
