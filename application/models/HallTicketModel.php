@@ -11,10 +11,21 @@ class HallTicketModel extends CI_Model
     {
         $data=[
             'enrollment_number'=>$EnrollmentNumber,
-            'hall_ticket_path'=>$HallTicketUplodeData['full_path']
+            'hall_ticket_path'=>base_url('uploads/HallTicket/' . $HallTicketUplodeData['file_name'])
         ];
         return $this->db->insert('student_hall_ticket',$data);
     }
+
+    public function MultipleUploadHallTicket($fileName,$filePath)
+    {
+        $data=[
+            'enrollment_number'=>$fileName,
+            'hall_ticket_path'=>$filePath
+        ];
+        return $this->db->insert('student_hall_ticket',$data);
+    }
+
+
 
 
 }
