@@ -57,12 +57,11 @@ class AffiliationModel extends CI_Model {
         if (empty($courseIds)) {
             return [];
         }
-        $this->db->select('sector_name');
-        $this->db->from('Sector');
-        $this->db->where_in('id', $courseIds);
-        $query = $this->db->get();
-        
-        return array_column($query->result_array(), 'sector_name'); 
+        $query = $this->db->select('sector_name')
+                          ->where_in('id', $courseIds) // Ensures multiple IDs are filtered
+                          ->get('Sector'); // Directly fetch from the table
+
+        return array_column($query->result_array(), 'sector_name');
     }
 
     public function UploadDeletion($affiliationId)

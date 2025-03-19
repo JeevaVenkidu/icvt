@@ -541,5 +541,32 @@ class AffiliationController extends CI_Controller
 
         }
     }
+
+    public function addSector()
+    {
+        
+        $this->form_validation->set_rules('sector_name', 'Sector Name', 'required');
+        if ($this->form_validation->run() == FALSE) {
+            echo json_encode([
+                'status' => false,
+                'message' => validation_errors()
+            ]);
+            return;
+        }
+    
+        $sectorName = $this->input->post('sector_name');
+        if ($this->db->insert('sector', ['sector_name' => $sectorName])) {
+            echo json_encode([
+                'status' => true,
+                'message' => 'Sector name added successfully'
+            ]);
+        } else {
+            echo json_encode([
+                'status' => false,
+                'message' => 'Sector name not added. Something went wrong'
+            ]);
+        }
+    }
+    
 }
 ?>
