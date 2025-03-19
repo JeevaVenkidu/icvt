@@ -441,7 +441,7 @@ class AffiliationController extends CI_Controller
     }
 
 
-    public function getSelectedCourse()
+    public function getSelectedSector()
     {
         $this->form_validation->set_rules('InstitutionId','Institution id','required');
         if($this->form_validation->run() == FALSE)
@@ -462,7 +462,7 @@ class AffiliationController extends CI_Controller
             ]);
             return;
         }
-        $coursesId=$this->AffiliationModel->getSelectedCoursesIdModel($InstitutionId);
+        $coursesId=$this->AffiliationModel->getSelectedSectorIdModel($InstitutionId);
         if(empty($coursesId))
         {
             echo json_encode([
@@ -472,7 +472,7 @@ class AffiliationController extends CI_Controller
             return ;
 
         }
-        $courses=$this->AffiliationModel->getSelectedCourses($coursesId);
+        $courses=$this->AffiliationModel->getSelectedSector($coursesId);
         if(empty($courses))
         {
             echo json_encode([

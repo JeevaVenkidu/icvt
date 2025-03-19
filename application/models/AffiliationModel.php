@@ -40,7 +40,7 @@ class AffiliationModel extends CI_Model {
     public function updateAffiliation($update_data,$id){
         return $this->db->where('id', $id)->update('affiliation', $update_data) && $this->db->affected_rows() > 0;
     }
-    public function getSelectedCoursesIdModel($id) {
+    public function getSelectedSectorIdModel($id) {
         $this->db->select('selected_courses');
         $this->db->from('affiliation');
         $this->db->where('id', $id);
@@ -52,17 +52,17 @@ class AffiliationModel extends CI_Model {
         }
         return [];
     }
-    public function getSelectedCourses($courseIds)
+    public function getSelectedSector($courseIds)
     {
         if (empty($courseIds)) {
             return [];
         }
-        $this->db->select('*');
-        $this->db->from('courses');
+        $this->db->select('sector_name');
+        $this->db->from('Sector');
         $this->db->where_in('id', $courseIds);
         $query = $this->db->get();
         
-        return array_column($query->result_array(), 'course_name'); 
+        return array_column($query->result_array(), 'sector_name'); 
     }
 
     public function UploadDeletion($affiliationId)
