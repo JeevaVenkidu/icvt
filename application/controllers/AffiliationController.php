@@ -544,7 +544,7 @@ class AffiliationController extends CI_Controller
 
     public function addSector()
     {
-        
+
         $this->form_validation->set_rules('sector_name', 'Sector Name', 'required');
         if ($this->form_validation->run() == FALSE) {
             echo json_encode([
@@ -566,6 +566,34 @@ class AffiliationController extends CI_Controller
                 'message' => 'Sector name not added. Something went wrong'
             ]);
         }
+    }
+    public function editSectorStatus()
+    {
+        $this->form_validation->set_rules('id','sector id','required');
+        $this->form_validation->set_rules('status','status','required');
+        if ($this->form_validation->run() == FALSE) {
+            echo json_encode([
+                'status' => false,
+                'message' => validation_errors()
+            ]);
+            return;
+        }
+        $status=$this->input->post('status');
+        $id=$this->input->post('id');
+
+        if($this->AffiliationModel->editSectorStatusModel($id,$status)){
+            echo json_encode([
+                'status' => true,
+                'message' => 'Status updated successfully.'
+            ]);
+        }else{
+            echo json_encode([
+                'status' => true,
+                'message' => 'Status change failed.'
+            ]);
+
+        }
+
     }
     
 }

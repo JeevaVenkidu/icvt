@@ -111,6 +111,12 @@ class AffiliationModel extends CI_Model {
         return $this->db->update('affiliation',['password'=>$password]);
 
     }
+    public function editSectorStatusModel($id,$status)
+    {
+        $this->db->where('id', $id);
+        $this->db->update('sector', ['status' => $status]);
+        return $this->db->affected_rows() > 0;
+    }
     
 
 
