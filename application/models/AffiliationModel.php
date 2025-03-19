@@ -117,6 +117,12 @@ class AffiliationModel extends CI_Model {
         $this->db->update('sector', ['status' => $status]);
         return $this->db->affected_rows() > 0;
     }
+
+    public function getAllSector()
+    {
+        $query = $this->db->get('sector'); 
+        return $query->result_array(); 
+    }
     
 
 

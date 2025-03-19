@@ -567,6 +567,7 @@ class AffiliationController extends CI_Controller
             ]);
         }
     }
+
     public function editSectorStatus()
     {
         $this->form_validation->set_rules('id','sector id','required');
@@ -593,6 +594,46 @@ class AffiliationController extends CI_Controller
             ]);
 
         }
+
+    }
+
+    public function getSector()
+    {
+        $getSector=$this->AffiliationModel->getAllSector();
+        if(empty($getSector))
+        {
+            echo "no data found";
+            return ;
+        }
+        $pagination = [
+            "current_page" => 1,
+            "per_page" => 10,
+            "total" => count($getSector),
+            "last_page" => 1,
+            "next_page_url" => null,
+            "prev_page_url" => null
+        ];
+        $response = [
+            "status" => "success",
+            "meta" => [
+                "code" => 200,
+                "details" => "Instituion retrieved successfully",
+                "timestamp" => date('c')
+            ],
+            "data" => [
+                "pagination" => $pagination,
+                "items" => $getSector,
+                "columns" => [
+                    "id" => "ID",
+                    "sector_name" => "SECTOR_NAME",
+                    "status" => "STATUS"
+                ]
+            ]
+        ];
+        $this->output
+        ->set_content_type('application/json')
+        ->set_status_header(200)
+        ->set_output(json_encode($response));
 
     }
     
