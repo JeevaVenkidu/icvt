@@ -123,6 +123,18 @@ class AffiliationModel extends CI_Model {
         $query = $this->db->get('sector'); 
         return $query->result_array(); 
     }
+
+    public function checkSectorExists($id)
+    {
+        $query=$this->db->get_where('sector',['id'=>$id]);
+        return $query->num_rows()>0;
+    }
+    
+    public function deleteSector($id)
+    {
+        $this->db->where('id', $id);
+        return $this->db->delete('sector');
+    }
     
 
 

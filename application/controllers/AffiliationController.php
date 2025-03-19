@@ -636,6 +636,40 @@ class AffiliationController extends CI_Controller
         ->set_output(json_encode($response));
 
     }
+
+    public function deleteSector()
+    {
+        $this->form_validation->set_rules('id','sector id','required');
+        if ($this->form_validation->run() == FALSE) {
+            echo json_encode([
+                'status' => false,
+                'message' => validation_errors()
+            ]);
+            return;
+        }
+        $id=$this->input->post('id');
+        if(!$this->AffiliationModel->checkSectorExists($id))
+        {
+            echo json_encode([
+                'status' => false,
+                'message' =>'sector not found'
+            ]);
+            return;
+        }
+        if($this->AffiliationModel->deleteSector($id))
+        {
+            echo json_encode([
+                'status' => true,
+                'message' => 'Sector deleted successfully'
+            ]);
+        }else{
+            echo json_encode([
+                'status' => false,
+                'message' => 'Sector deletion failed. Something went wrong'
+            ]);
+
+        }
+    }
     
 }
 ?>
