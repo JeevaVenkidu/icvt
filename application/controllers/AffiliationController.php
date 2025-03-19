@@ -141,7 +141,7 @@ class AffiliationController extends CI_Controller
 
         //ClassroomPhoto
 
-        if ($this->upload->do_upload('ClassroomPhoto')) {
+        if ($this->upload->do_upload('FrontOfficePhoto')) {
             $ClassroomPhotoUpload = $this->upload->data(); // Store uploaded file details
             $ClassroomPhotoUploadStatus=$this->AffiliationModel->AddAffiliation($ClassroomPhotoUpload ,$affiliation_id);
             if(!$ClassroomPhotoUploadStatus)

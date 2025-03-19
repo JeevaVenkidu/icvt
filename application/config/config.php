@@ -538,6 +538,6 @@ $config['rewrite_short_tags'] = FALSE;
 $config['proxy_ips'] = '';
 $config['upload_settings'] = [
     'upload_path'   => './uploads/',
-    'allowed_types' => 'pdf|jpg|png|jpeg ',
+    'allowed_types' => 'pdf|jpg|png|jpeg',
     'max_size'      => 102400
 ];

@@ -16,7 +16,7 @@ class StudentResultController extends CI_Controller
         header('Content-Type: application/json');
         
     }
-    public function addStudentResults()
+        public function addStudentResults()
         {
             $this->form_validation->set_rules('StudentName', 'Student Name', 'required');
             $this->form_validation->set_rules('EnrollmentNumber', 'Enrollment Number', 'required');
