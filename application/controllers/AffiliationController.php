@@ -673,8 +673,144 @@ class AffiliationController extends CI_Controller
 
         }
     }
-
+    public function addCourses()
+    {
+        $this->form_validation->set_rules('sectorId', 'Sector Id', 'required');
+        $this->form_validation->set_rules('courseCode', 'course Code', 'required');
+        $this->form_validation->set_rules('courseName', 'courses Name', 'required');
+        
+        if ($this->form_validation->run() == FALSE) {
+            echo json_encode([
+                'status' => false,
+                'message' => validation_errors()
+            ]);
+            return;
+        }
+        $sectorId=$this->input->post('sectorId');
+        $courseCode=$this->input->post('courseCode');
+        $courseName=$this->input->post('courseName');
     
+        if ($this->AffiliationModel->addCoursesModel($sectorId,$courseCode,$courseName)){
+            echo json_encode([
+                'status' => true,
+                'message' => 'course name added successfully'
+            ]);
+        } else {
+            echo json_encode([
+                'status' => false,
+                'message' => 'course name not added. Something went wrong'
+            ]);
+        }
+
+    }
+
+    public function editCourseStatus()
+    {
+        $this->form_validation->set_rules('id','courses id','required');
+        $this->form_validation->set_rules('status','status','required');
+        if ($this->form_validation->run() == FALSE) {
+            echo json_encode([
+                'status' => false,
+                'message' => validation_errors()
+            ]);
+            return;
+        }
+        $status=$this->input->post('status');
+        $id=$this->input->post('id');
+        if($this->AffiliationModel->editCourseStatusModel($id,$status)){
+            echo json_encode([
+                'status' => true,
+                'message' => 'Status updated successfully.'
+            ]);
+        }else{
+            echo json_encode([
+                'status' => true,
+                'message' => 'Status change failed.'
+            ]);
+
+        }
+
+    }
+
+    public function getcourses()
+    {
+        $getcourses=$this->AffiliationModel->getAllcourse();
+        if(empty($getcourses))
+        {
+            echo "no data found";
+            return ;
+        }
+        $pagination = [
+            "current_page" => 1,
+            "per_page" => 10,
+            "total" => count($getcourses),
+            "last_page" => 1,
+            "next_page_url" => null,
+            "prev_page_url" => null
+        ];
+        $response = [
+            "status" => "success",
+            "meta" => [
+                "code" => 200,
+                "details" => "Instituion retrieved successfully",
+                "timestamp" => date('c')
+            ],
+            "data" => [
+                "pagination" => $pagination,
+                "items" => $getcourses,
+                "columns" => [
+                    "id" => "ID",
+                    "sector_id" => "SECTOR_ID",
+                    "course_code" => "COURSE_CODE",
+                    "courses" => "COURSES",
+                    "status" => "STATUS"
+                ]
+            ]
+        ];
+        $this->output
+        ->set_content_type('application/json')
+        ->set_status_header(200)
+        ->set_output(json_encode($response));
+
+    }
+
+    public function deleteCourses()
+    {
+        $this->form_validation->set_rules('id','course id','required');
+        if ($this->form_validation->run() == FALSE) {
+            echo json_encode([
+                'status' => false,
+                'message' => validation_errors()
+            ]);
+            return;
+        }
+        $id=$this->input->post('id');
+        if(!$this->AffiliationModel->checkCourseExists($id))
+        {
+            echo json_encode([
+                'status' => false,
+                'message' =>'course not found'
+            ]);
+            return;
+        }
+        
+        if($this->AffiliationModel->deleteCourse($id))
+        {
+            echo json_encode([
+                'status' => true,
+                'message' => 'course deleted successfully'
+            ]);
+        }else{
+            echo json_encode([
+                'status' => false,
+                'message' => 'course deletion failed. Something went wrong'
+            ]);
+
+        }
+    }
+
+
+
     
 }
 ?>
