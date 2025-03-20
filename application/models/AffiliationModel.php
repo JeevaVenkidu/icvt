@@ -41,7 +41,7 @@ class AffiliationModel extends CI_Model {
         return $this->db->where('id', $id)->update('affiliation', $update_data) && $this->db->affected_rows() > 0;
     }
     public function getSelectedSectorIdModel($id) {
-        $this->db->select('selected_courses');
+        $this->db->select('sector');
         $this->db->from('affiliation');
         $this->db->where('id', $id);
         $query = $this->db->get();

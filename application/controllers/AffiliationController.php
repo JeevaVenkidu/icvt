@@ -32,8 +32,7 @@ class AffiliationController extends CI_Controller
         $this->form_validation->set_rules('email', 'Email', 'required|valid_email');
         $this->form_validation->set_rules('postal_address', 'Postal Address', 'required');
         $this->form_validation->set_rules('state', 'State', 'required|trim');
-        $this->form_validation->set_rules('selected_courses', 'Selected Courses', 'required');
-        //$this->form_validation->set_rules('status', 'Status', 'required|in_list[Pending,Approved,Rejected]');
+        $this->form_validation->set_rules('sector', 'sector ', 'required');
         if ($this->form_validation->run() == FALSE) {
             echo json_encode([
                 'status' => false,
@@ -56,7 +55,7 @@ class AffiliationController extends CI_Controller
             'email'              => $this->input->post('email'),
             'postal_address'     => $this->input->post('postal_address'),
             'state'              => $this->input->post('state'),
-            'selected_courses'   => $this->input->post('selected_courses'), // Comma-separated course IDs
+            'sector'             => $this->input->post('selected_courses'), // Comma-separated course IDs
             'created_at'         => date('Y-m-d H:i:s'),
             'updated_at'         => date('Y-m-d H:i:s')
         );
@@ -269,7 +268,7 @@ class AffiliationController extends CI_Controller
                         "email" => "EMAIL",
                         "postal_address" => "POSTAL_ADDRESS",
                         "state" => "STATE",
-                        "selected_courses" => "SELECTED_COURSES",
+                        "sector" => "SECTOR",
                         "created_at" => "CREATED_AT",
                         "updated_at" => "UPDATED_AT",
                         "status" => "STATUS"
@@ -320,7 +319,7 @@ class AffiliationController extends CI_Controller
                         "email" => "EMAIL",
                         "postal_address" => "POSTAL_ADDRESS",
                         "state" => "STATE",
-                        "selected_courses" => "SELECTED_COURSES",
+                        "sector" => "SECTOR",
                         "created_at" => "CREATED_AT",
                         "updated_at" => "UPDATED_AT",
                         "status" => "STATUS"
@@ -422,8 +421,12 @@ class AffiliationController extends CI_Controller
         if(isset($_POST['email']))$update_data['email']=$_POST['email'];
         if(isset($_POST['postal_address']))$update_data['postal_address']=$_POST['postal_address'];
         if(isset($_POST['state']))$update_data['state']=$_POST['state'];
-        if(isset($_POST['selected_courses']))$update_data['selected_courses']=$_POST['selected_courses'];
+        if(isset($_POST['sector']))$update_data['sector']=$_POST['sector'];
         $update_data['updated_at']=date('Y-m-d H:i:s');
+
+
+
+
         if($this->AffiliationModel->updateAffiliation($update_data,$_POST['id'])){
             $response = array(
                 'status' => 'success',
@@ -670,6 +673,8 @@ class AffiliationController extends CI_Controller
 
         }
     }
+
+    
     
 }
 ?>
