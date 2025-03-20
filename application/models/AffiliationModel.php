@@ -135,6 +135,41 @@ class AffiliationModel extends CI_Model {
         $this->db->where('id', $id);
         return $this->db->delete('sector');
     }
+
+    public function addCoursesModel($sectorId,$courseCode,$courseName)
+    {
+        $data=[
+            'sector_id'=>$sectorId,
+            'course_code'=>$courseCode,
+            'courses'=>$courseName,
+            'status'=>'active'
+        ];
+        return $this->db->insert('courses',$data);
+
+    }
+
+    public function editCourseStatusModel($id,$status)
+    {
+        $this->db->where('id', $id);
+        $this->db->update('courses', ['status' => $status]);
+        return $this->db->affected_rows() > 0;
+    }
+    public function getAllcourse()
+    {
+        $query = $this->db->get('courses'); 
+        return $query->result_array(); 
+    }
+
+    public function checkCourseExists($id)
+    {
+        $query=$this->db->get_where('courses',['id'=>$id]);
+        return $query->num_rows()>0;
+    } 
+    public function deleteCourse($id)
+    {
+        $this->db->where('id', $id);
+        return $this->db->delete('courses');
+    }
     
 
 
