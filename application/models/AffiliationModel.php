@@ -111,6 +111,22 @@ class AffiliationModel extends CI_Model {
         return $this->db->update('affiliation',['password'=>$password]);
 
     }
+
+    public function InstitutionLoginModel($email,$password)
+    {
+        $query = $this->db->get_where('affiliation', ['email' => $email]);
+        $query1 = $query->row_array();
+        if (!$query1) {
+            return false;
+        }
+        if($query1['password']=='welcome ICVT@123')
+        {
+            return true;
+        }
+        return password_verify($password, $query1['password']);
+
+    }
+
     public function editSectorStatusModel($id,$status)
     {
         $this->db->where('id', $id);

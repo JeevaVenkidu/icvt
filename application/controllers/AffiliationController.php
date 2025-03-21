@@ -545,6 +545,27 @@ class AffiliationController extends CI_Controller
         }
     }
 
+    public function InstitutionLogin()
+    {
+        $this->form_validation->set_rules('email','E-mail ','required');
+        $this->form_validation->set_rules('password','Password','required');
+        if($this->form_validation->run() == FALSE){
+            echo json_encode([
+                'status'=>false,
+                'message'=>validation_errors()
+            ]);
+            return;
+        }
+        $Email=$this->input->post('email',true);
+        $passWord=$this->input->post('password',true);
+        if(!$this->AffiliationModel->InstitutionLoginModel($Email,$passWord))
+        {
+            echo json_encode(['status' => 'error', 'message' => 'Invalid username or password']);
+            return;
+        }
+        echo json_encode(['status' => 'success', 'message' => 'Login successful', 'Institution' => $Email]);
+    }
+
     public function addSector()
     {
 

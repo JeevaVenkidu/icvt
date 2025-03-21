@@ -29,8 +29,8 @@ class AdminAuth extends CI_Controller
 
     public function AdminLogin()
     {
-        $this->form_validation->set_rules('username','Affiliation Id','required');
-        $this->form_validation->set_rules('password','Affiliation Id','required');
+        $this->form_validation->set_rules('username','username','required');
+        $this->form_validation->set_rules('password','password','required');
         if($this->form_validation->run() == FALSE){
             echo json_encode([
                 'status'=>false,
