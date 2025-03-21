@@ -443,6 +443,47 @@ class AffiliationController extends CI_Controller
         echo json_encode($response);
     }
 
+    public function editAffiliationUplodes()
+    {
+        $this->form_validation->set_rules('id',' file Id','required');
+        if($this->form_validation->run() == FALSE){
+            echo json_encode([
+                'status'=>false,
+                'message'=>validation_errors()
+            ]);
+            return;
+        }
+        $id=$this->input->post('id');
+        if(!$this->AffiliationModel->AffiliationUplodesExists($id))
+        {
+            echo "User ID is missing!";
+            return;
+
+        }
+        if(!$this->AffiliationModel->AffiliationUplodesDeletion($id))
+        {
+            echo "something went wrong please try again";
+            return;
+        }
+
+        if ($this->upload->do_upload('file')) {
+            $fileUploadData = $this->upload->data(); // Store uploaded file details
+            $fileUploadStatus=$this->AffiliationModel->AffiliationUplodesUpdate($fileUploadData,$id);
+            if(!$fileUploadStatus)
+            {
+                echo json_encode(["error" => "Something went wrong. file  was not uploaded properly."]);
+                return ; 
+            }
+        } else {
+            echo $this->upload->display_errors(); // Show error if upload fails
+        }
+        echo json_encode([
+            'status'  => true,
+            'message' => "Successfully edited the uploaded file"
+        ]);
+        
+    }
+
 
     public function getSelectedSector()
     {
