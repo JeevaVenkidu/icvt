@@ -87,6 +87,46 @@ class AffiliationModel extends CI_Model {
     
         return $k;
     }
+
+    public function AffiliationUplodesExists($id)
+    {
+        $query = $this->db->get_where('uploads', ['id' => $id]);
+        return $query->num_rows() > 0; // Returns TRUE if ID exists, FALSE otherwise
+    }
+    public function AffiliationUplodesDeletion($id)
+    {
+        $this->db->select('file_path');
+        $this->db->from('uploads');
+        $this->db->where('id', $id);
+        $query = $this->db->get();
+        if ($query->num_rows() > 0) {
+            $file_path = $query->row()->file_path;
+            if (file_exists($file_path)) {
+                if (unlink($file_path)) {
+                    
+                    return true;
+                }
+            }
+            return false; 
+        } else {
+            return false;
+            
+        }
+
+    }
+    public function AffiliationUplodesUpdate($fileUploadData,$id)
+    {
+        $data=[
+            'file_name'=> $fileUploadData['file_name'],
+            'file_path'=>$fileUploadData['full_path'],
+            'file_extension' => $fileUploadData['file_ext'] ?? '',
+            'uploaded_at' => date('Y-m-d H:i:s')
+            
+        ];
+        $this->db->where('id', $id);
+        return $this->db->update('uploads', $data);
+    }
+
     public function checkUserEmailExists($email)
     {
         $query=$this->db->get_where('affiliation',['email'=>$email]);
