@@ -20,6 +20,7 @@ class StudentController extends CI_Controller
     {
         $this->form_validation->set_rules('studentName','student Name','required');
         $this->form_validation->set_rules('dateOfBirth','date Of Birth','required');
+        $this->form_validation->set_rules('institution_id','institution id','required');
         $this->form_validation->set_rules('institutionName','institution Name','required');
         $this->form_validation->set_rules('gender','Gender','required');
         $this->form_validation->set_rules('motherName','mother Name','required');
@@ -55,6 +56,7 @@ class StudentController extends CI_Controller
         $data=array(
             'student_name'=>$this->input->post('studentName'),
             'date_of_birth'=>$this->input->post('dateOfBirth'),
+            'institution_id'=>$this->input->post('institution_id'),
             'institution_name'=>$this->input->post('institutionName'),
             'gender'=>$this->input->post('gender'),
             'mother_name'=>$this->input->post('motherName'),
@@ -118,6 +120,8 @@ class StudentController extends CI_Controller
         $update_data = array();
         if (isset($_POST['student_name'])) $update_data['student_name'] = $_POST['student_name'];
         if (isset($_POST['date_of_birth'])) $update_data['date_of_birth'] = $_POST['date_of_birth'];
+        if (isset($_POST['Enrollment_Number'])) $update_data['Enrollment_Number'] = $_POST['Enrollment_Number'];
+        if (isset($_POST['institution_id'])) $update_data['institution_id'] = $_POST['institution_id'];
         if (isset($_POST['institution_name'])) $update_data['institution_name'] = $_POST['institution_name'];
         if (isset($_POST['gender'])) $update_data['gender'] = $_POST['gender'];
         if (isset($_POST['motherName'])) $update_data['motherName'] = $_POST['motherName'];
