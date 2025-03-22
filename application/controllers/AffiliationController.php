@@ -55,7 +55,7 @@ class AffiliationController extends CI_Controller
             'email'              => $this->input->post('email'),
             'postal_address'     => $this->input->post('postal_address'),
             'state'              => $this->input->post('state'),
-            'sector'             => $this->input->post('selected_courses'), // Comma-separated course IDs
+            'sector'             => $this->input->post('selected_sector'), // Comma-separated course IDs
             'created_at'         => date('Y-m-d H:i:s'),
             'updated_at'         => date('Y-m-d H:i:s')
         );
@@ -119,13 +119,13 @@ class AffiliationController extends CI_Controller
                 $count++;
             }
         } else {
-            echo $this->upload->display_errors(); // Show error if upload fails
+            echo $this->upload->display_errors();
         }
         
        //FrontOfficePhoto
 
         if ($this->upload->do_upload('FrontOfficePhoto')) {
-            $FrontOfficePhotoUpload = $this->upload->data(); // Store uploaded file details
+            $FrontOfficePhotoUpload = $this->upload->data(); 
             $FrontOfficePhotoUploadStatus=$this->AffiliationModel->AddAffiliation($FrontOfficePhotoUpload ,$affiliation_id);
             if(!$FrontOfficePhotoUploadStatus)
             {
@@ -332,6 +332,61 @@ class AffiliationController extends CI_Controller
             ->set_output(json_encode($response));
 
         }
+    }
+
+    public function LoadApprovedInstituion()
+    {
+
+        $ApprovedInstituion = $this->AffiliationModel->GetApprovedInstituion();
+            if(empty($ApprovedInstituion))
+            {
+                echo "no data found";
+                return ;
+            }
+
+        $pagination = [
+            "current_page" => 1,
+            "per_page" => 10,
+            "total" => count($ApprovedInstituion),
+            "last_page" => 1,
+            "next_page_url" => null,
+            "prev_page_url" => null
+        ];
+        $response = [
+            "status" => "success",
+            "meta" => [
+                "code" => 200,
+                "details" => "Approved Instituion retrieved successfully",
+                "timestamp" => date('c')
+            ],
+            "data" => [
+                "pagination" => $pagination,
+                "items" => $ApprovedInstituion,
+                "columns" => [
+                    "id" => "ID",
+                    "applicant_name" => "APPLICANT_NAME",
+                    "phone_number" => "PHONE_NUMBER",
+                    "city" => "CITY",
+                    "postal_code" => "POSTAL_CODE",
+                    "website" => "WEBSITE",
+                    "sector" => "SECTOR",
+                    "institution_name" => "INSTITUTION_NAME",
+                    "mobile_number" => "MOBILE_NUMBER",
+                    "permanent_address" => "PERMANENT_ADDRESS",
+                    "email" => "EMAIL",
+                    "postal_address" => "POSTAL_ADDRESS",
+                    "state" => "STATE",
+                    "sector" => "SECTOR",
+                    "created_at" => "CREATED_AT",
+                    "updated_at" => "UPDATED_AT",
+                    "status" => "STATUS"
+                ]
+            ]
+        ];
+        $this->output
+        ->set_content_type('application/json')
+        ->set_status_header(200)
+        ->set_output(json_encode($response));
     }
 
 

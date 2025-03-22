@@ -24,12 +24,19 @@ class AffiliationModel extends CI_Model {
 
     public function GetInstituion($id){
         $query = $this->db->get_where('affiliation', ['id' => $id]); 
-        return $query->row_array(); // Return single record as array
+        return $query->row_array();
     }
     public function GetAllInstituion()
     {
         $query = $this->db->get('affiliation'); 
         return $query->result_array(); 
+    }
+
+    public function GetApprovedInstituion()
+    {
+        $query = $this->db->get_where('affiliation', ['status' => 'approved']); 
+        return $query->result_array();
+        
     }
 
     public function checkAffiliationExists($id)
